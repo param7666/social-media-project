@@ -1,4 +1,3 @@
-              
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -9,7 +8,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to SocialConnect</title>
-<style>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
         * {
             margin: 0;
             padding: 0;
@@ -17,228 +19,505 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 50%, #45b7d1 100%);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            25% {
+                background-position: 100% 50%;
+            }
+            50% {
+                background-position: 100% 100%;
+            }
+            75% {
+                background-position: 0% 100%;
+            }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.15), transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.1), transparent),
+                radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.1), transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.1), transparent);
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: sparkle 20s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.1);
+            }
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
             display: grid;
             grid-template-columns: 1fr 1fr;
             max-width: 1200px;
             width: 100%;
-            min-height: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            box-shadow: 
+                0 32px 64px rgba(0, 0, 0, 0.15),
+                0 16px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             overflow: hidden;
+            min-height: 650px;
             position: relative;
+            z-index: 10;
+            transform: perspective(1000px) rotateX(2deg);
+            transition: transform 0.6s ease;
+        }
+
+        .container:hover {
+            transform: perspective(1000px) rotateX(0deg) scale(1.02);
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
         }
 
         .welcome-section {
-            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
-            color: white;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+            background-size: 200% 200%;
+            animation: gradientMove 8s ease infinite;
             padding: 60px 40px;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            color: white;
             position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes gradientMove {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
 
         .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px),
+                radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 50px 50px, 100px 100px;
+            animation: floatingDots 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes floatingDots {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .welcome-section::after {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="1.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
-            opacity: 0.3;
+            background: 
+                linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.05) 50%, transparent 70%);
+            animation: lightSweep 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes lightSweep {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
         }
 
         .logo {
-            font-size: 3rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            font-family: 'Poppins', sans-serif;
+            font-size: 3.2rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            position: relative;
+            background: linear-gradient(45deg, #ffffff, #f0f9ff, #ffffff);
+            background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            position: relative;
-            z-index: 1;
+            animation: textShine 3s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(255,255,255,0.5);
+        }
+
+        @keyframes textShine {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .logo::after {
+            content: '✨';
+            position: absolute;
+            right: -40px;
+            top: -10px;
+            font-size: 1.5rem;
+            animation: sparkleRotate 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkleRotate {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
         }
 
         .tagline {
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-            opacity: 0.9;
-            line-height: 1.4;
-            position: relative;
-            z-index: 1;
+            font-size: 1.3rem;
+            margin-bottom: 50px;
+            opacity: 0.95;
+            line-height: 1.5;
+            font-weight: 300;
+            animation: fadeInUp 1s ease 0.5s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 0.95;
+                transform: translateY(0);
+            }
         }
 
         .features {
             list-style: none;
-            position: relative;
-            z-index: 1;
+            padding: 0;
         }
 
         .features li {
-            margin: 15px 0;
-            padding-left: 30px;
+            margin: 18px 0;
+            padding: 16px 0;
+            padding-left: 40px;
             position: relative;
-            font-size: 1rem;
-            line-height: 1.5;
-            opacity: 0.9;
-            transform: translateX(-20px);
-            animation: slideIn 0.6s ease forwards;
+            font-size: 1.05rem;
+            opacity: 0;
+            font-weight: 400;
+            transition: all 0.4s ease;
+            animation: slideInLeft 0.6s ease forwards;
+            animation-delay: calc(var(--i) * 0.1s);
         }
 
-        .features li:nth-child(1) { animation-delay: 0.1s; }
-        .features li:nth-child(2) { animation-delay: 0.2s; }
-        .features li:nth-child(3) { animation-delay: 0.3s; }
-        .features li:nth-child(4) { animation-delay: 0.4s; }
-        .features li:nth-child(5) { animation-delay: 0.5s; }
+        .features li:nth-child(1) { --i: 1; }
+        .features li:nth-child(2) { --i: 2; }
+        .features li:nth-child(3) { --i: 3; }
+        .features li:nth-child(4) { --i: 4; }
+        .features li:nth-child(5) { --i: 5; }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 0.9;
+                transform: translateX(0);
+            }
+        }
 
         .features li::before {
             content: '✓';
             position: absolute;
             left: 0;
-            top: 0;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            color: white;
-            width: 20px;
-            height: 20px;
+            color: #10b981;
+            font-weight: bold;
+            font-size: 14px;
+            background: linear-gradient(135deg, #ffffff, #f0fdf4);
             border-radius: 50%;
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
+            box-shadow: 
+                0 4px 12px rgba(16, 185, 129, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(16, 185, 129, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .features li:hover {
+            opacity: 1;
+            transform: translateX(10px);
+        }
+
+        .features li:hover::before {
+            transform: scale(1.1) rotate(360deg);
+            box-shadow: 
+                0 6px 20px rgba(16, 185, 129, 0.4),
+                0 3px 8px rgba(0, 0, 0, 0.15);
         }
 
         .form-section {
-            padding: 40px;
+            padding: 60px 40px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-        }
-
-        .form-container {
-            max-width: 400px;
-            width: 100%;
-            margin: 0 auto;
-        }
-
-        .form-tabs {
-            display: flex;
-            margin-bottom: 30px;
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 4px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
             position: relative;
         }
 
-        .tab {
-            flex: 1;
-            text-align: center;
-            padding: 12px 20px;
-            cursor: pointer;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
+        .form-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .form-container {
+            width: 100%;
             position: relative;
             z-index: 2;
         }
 
+        .form-tabs {
+            display: flex;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #f1f5f9;
+            position: relative;
+            border-radius: 8px 8px 0 0;
+            overflow: hidden;
+        }
+
+        .form-tabs::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            transition: transform 0.3s ease;
+            border-radius: 3px;
+        }
+
+        .form-tabs.register::before {
+            transform: translateX(100%);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 18px 0;
+            text-align: center;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            font-size: 1.05rem;
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+        }
+
+        .tab:first-child {
+            border-radius: 8px 0 0 0;
+        }
+
+        .tab:last-child {
+            border-radius: 0 8px 0 0;
+        }
+
         .tab.active {
-            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
-            color: white;
-            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+            color: #6366f1;
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            box-shadow: 
+                0 -4px 12px rgba(99, 102, 241, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
         }
 
-        .tab:not(.active) {
-            color: #666;
-        }
-
-        .tab:not(.active):hover {
-            color: #333;
-            background: rgba(255, 107, 107, 0.1);
+        .tab:hover:not(.active) {
+            color: #475569;
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            transform: translateY(-2px);
         }
 
         .form {
             display: none;
-            animation: fadeIn 0.3s ease;
+            animation: formSlideIn 0.5s ease both;
         }
 
         .form.active {
             display: block;
         }
 
+        @keyframes formSlideIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px) scale(0.95);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1);
+            }
+        }
+
         .form h2 {
-            color: #333;
-            margin-bottom: 25px;
-            font-size: 1.8rem;
-            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1f2937, #4f46e5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            position: relative;
+        }
+
+        .form h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            border-radius: 2px;
         }
 
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 20px;
+            margin-bottom: 25px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            position: relative;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: 500;
-            font-size: 0.9rem;
+            margin-bottom: 10px;
+            color: #374151;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
         }
 
         .form-input {
             width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
+            padding: 16px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
             font-size: 1rem;
             transition: all 0.3s ease;
-            background: #fff;
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            font-family: 'Inter', sans-serif;
+            position: relative;
         }
 
         .form-input:focus {
             outline: none;
-            border-color: #ff6b6b;
-            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
-            transform: translateY(-1px);
+            border-color: #6366f1;
+            box-shadow: 
+                0 0 0 4px rgba(99, 102, 241, 0.1),
+                0 8px 25px rgba(99, 102, 241, 0.15);
+            transform: translateY(-2px);
+            background: #ffffff;
         }
 
         .form-input:hover:not(:focus) {
-            border-color: #c7d0e8;
+            border-color: #cbd5e1;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group:focus-within label {
+            color: #6366f1;
+            transform: translateY(-2px);
         }
 
         .submit-btn {
             width: 100%;
-            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+            background-size: 200% 200%;
             color: white;
             border: none;
-            padding: 14px;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
+            padding: 18px 0;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
+            margin-top: 15px;
             position: relative;
             overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .submit-btn::before {
@@ -248,94 +527,157 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 15px 35px rgba(99, 102, 241, 0.4),
+                0 8px 15px rgba(0, 0, 0, 0.1);
+            background-position: 100% 0;
+            animation: buttonPulse 2s ease infinite;
         }
 
         .submit-btn:hover::before {
             left: 100%;
         }
 
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
-        }
-
         .submit-btn:active {
             transform: translateY(-1px);
+            box-shadow: 
+                0 8px 20px rgba(99, 102, 241, 0.3),
+                0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% {
+                box-shadow: 
+                    0 15px 35px rgba(99, 102, 241, 0.4),
+                    0 8px 15px rgba(0, 0, 0, 0.1);
+            }
+            50% {
+                box-shadow: 
+                    0 20px 45px rgba(99, 102, 241, 0.5),
+                    0 12px 25px rgba(0, 0, 0, 0.15);
+            }
         }
 
         .forgot-password {
             text-align: center;
-            margin-top: 15px;
+            margin-top: 25px;
         }
 
         .forgot-password a {
-            color: #ff6b6b;
+            color: #6366f1;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .forgot-password a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .forgot-password a:hover {
+            color: #4f46e5;
+            transform: translateY(-2px);
+        }
+
+        .forgot-password a:hover::before {
+            opacity: 1;
+        }0 10px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .forgot-password a {
+            color: #6366f1;
             text-decoration: none;
             font-size: 0.9rem;
             transition: color 0.3s ease;
         }
 
         .forgot-password a:hover {
-            color: #e55555;
+            color: #4f46e5;
             text-decoration: underline;
         }
 
         .error-message {
-            background: #fef2f2;
+            background: #fee2e2;
+            border: 1px solid #fecaca;
             color: #dc2626;
-            padding: 12px;
+            padding: 12px 16px;
             border-radius: 8px;
-            margin-bottom: 15px;
-            border-left: 4px solid #ef4444;
-            animation: shake 0.5s ease-in-out;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: none;
         }
 
         .success-message {
-            background: #ecfdf5;
-            color: #047857;
-            padding: 12px;
+            background: #dcfce7;
+            border: 1px solid #bbf7d0;
+            color: #16a34a;
+            padding: 12px 16px;
             border-radius: 8px;
-            margin-bottom: 15px;
-            border-left: 4px solid #4ecdc4;
-            animation: slideDown 0.5s ease;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
         }
 
         .field-error {
-            color: #ef4444;
-            font-size: 0.85rem;
+            color: #dc2626;
+            font-size: 0.8rem;
             margin-top: 5px;
             display: block;
         }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Result parameter styling */
+        .result-message {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #dc2626;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
+            font-weight: 500;
+            z-index: 1000;
+            animation: slideUp 0.3s ease;
+            max-width: 90%;
+            text-align: center;
         }
 
-        @keyframes slideIn {
-            to { 
-                opacity: 1; 
-                transform: translateX(0); 
+        @keyframes slideUp {
+            from {
+                transform: translate(-50%, 100%);
+                opacity: 0;
             }
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        @keyframes slideDown {
-            from { 
-                opacity: 0; 
-                transform: translateY(-10px); 
-            }
-            to { 
-                opacity: 1; 
-                transform: translateY(0); 
+            to {
+                transform: translate(-50%, 0);
+                opacity: 1;
             }
         }
 
@@ -344,46 +686,84 @@
             .container {
                 grid-template-columns: 1fr;
                 margin: 10px;
-                max-width: none;
+                border-radius: 15px;
             }
 
             .welcome-section {
                 padding: 40px 30px;
-                text-align: center;
-            }
-
-            .logo {
-                font-size: 2.5rem;
+                order: 2;
             }
 
             .form-section {
-                padding: 30px 25px;
+                padding: 40px 30px;
+                order: 1;
             }
 
             .form-row {
                 grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .logo {
+                font-size: 2.2rem;
+            }
+
+            .tagline {
+                font-size: 1rem;
+            }
+
+            .features li {
+                font-size: 0.9rem;
             }
         }
 
         @media (max-width: 480px) {
-            body {
-                padding: 10px;
+            .container {
+                margin: 5px;
             }
 
-            .welcome-section {
-                padding: 30px 20px;
-            }
-
+            .welcome-section,
             .form-section {
-                padding: 25px 20px;
+                padding: 30px 20px;
             }
 
             .logo {
                 font-size: 2rem;
             }
 
-            .tagline {
-                font-size: 1rem;
+            .form h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Additional animations */
+        .welcome-section {
+            animation: slideInLeft 0.6s ease;
+        }
+
+        .form-section {
+            animation: slideInRight 0.6s ease;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
             }
         }
     </style>
@@ -395,7 +775,6 @@
             <div class="logo">SocialConnect</div>
             <div class="tagline">Connect with friends and the world around you</div>
             
-            
             <ul class="features">
                 <li>Share photos and updates with friends</li>
                 <li>Connect with people you know</li>
@@ -405,143 +784,132 @@
             </ul>
         </div>
 
-
-<!-- Form Section -->
-<div class="form-section">
-    <div class="form-container">
-        <div class="form-tabs">
-            <div class="tab active" onclick="switchTab('login')">Login</div>
-            <div class="tab" onclick="switchTab('register')">Sign Up</div>
-        </div>
-
-        <!-- Login Form -->
-        <div id="loginForm" class="form active">
-            <h2>Welcome Back!</h2>
-
-            <div class="error-message" id="loginError"></div>
-
-            <!-- Spring Form -->
-            <form:form action="login" method="post" modelAttribute="user" >
-                <div class="form-group">
-                    <form:label path="email">Email or Username</form:label>
-                    <form:input path="email" name="email" id="loginEmail" class="form-input" placeholder="Enter your email or username" required="true"/>
+        <!-- Form Section -->
+        <div class="form-section">
+            <div class="form-container">
+                <div class="form-tabs">
+                    <div class="tab active" onclick="switchTab('login')">Login</div>
+                    <div class="tab" onclick="switchTab('register')">Sign Up</div>
                 </div>
 
-                <div class="form-group">
-                    <form:label path="password">Password</form:label>
-                    <form:password path="password" name="password" id="loginPassword" class="form-input" placeholder="Enter your password" required="true"/>
+                <!-- Login Form -->
+                <div id="loginForm" class="form active">
+                    <h2>Welcome Back!</h2>
+
+                    <div class="error-message" id="loginError"></div>
+
+                    <!-- Spring Form -->
+                    <form:form action="login" method="post" modelAttribute="user" >
+                        <div class="form-group">
+                            <form:label path="email">Email or Username</form:label>
+                            <form:input path="email" name="email" id="loginEmail" class="form-input" placeholder="Enter your email or username" required="true"/>
+                        </div>
+
+                        <div class="form-group">
+                            <form:label path="password">Password</form:label>
+                            <form:password path="password" name="password" id="loginPassword" class="form-input" placeholder="Enter your password" required="true"/>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Login</button>
+
+                        <div class="forgot-password">
+                            <a href="#" onclick="showForgotPassword()">Forgot your password?</a>
+                        </div>
+                        <br>
+                    </form:form>
                 </div>
 
-                <button type="submit" class="submit-btn">Login</button>
-
-                <div class="forgot-password">
-                    <a href="#" onclick="showForgotPassword()">Forgot your password?</a>
+                <!-- Register Form -->
+                <div id="registerForm" class="form">
+                    <h2>Create Account</h2>
+                    
+                    <!-- Success Message -->
+                    <c:if test="${not empty successMessage}">
+                        <div class="success-message" id="registerSuccess">${successMessage}</div>
+                    </c:if>
+                    
+                    <!-- Error Message -->
+                    <c:if test="${not empty errorMessage}">
+                        <div class="error-message" id="registerError">${errorMessage}</div>
+                    </c:if>
+                    
+                    <!-- Registration Form with ModelAttribute -->
+                    <form:form action="register" 
+                               method="post" 
+                               modelAttribute="user"
+                               onsubmit="handleRegister(event)">
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <form:label path="firstName">First Name</form:label>
+                                <form:input type="text" 
+                                           path="firstName" 
+                                           class="form-input" 
+                                           id="firstName"
+                                           placeholder="First name" 
+                                           required="true"/>
+                                <form:errors path="firstName" cssClass="field-error"/>
+                            </div>
+                            
+                            <div class="form-group">
+                                <form:label path="lastName">Last Name</form:label>
+                                <form:input type="text" 
+                                           path="lastName" 
+                                           class="form-input"
+                                           id="lastName"
+                                           placeholder="Last name" 
+                                           required="true"/>
+                                <form:errors path="lastName" cssClass="field-error"/>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <form:label path="email">Email</form:label>
+                            <form:input type="email" 
+                                       path="email" 
+                                       class="form-input"
+                                       id="email"
+                                       placeholder="Enter your email" 
+                                       required="true"/>
+                            <form:errors path="email" cssClass="field-error"/>
+                        </div>
+                        
+                        <div class="form-group">
+                            <form:label path="userName">Username</form:label>
+                            <form:input type="text" 
+                                       path="userName" 
+                                       class="form-input" 
+                                       id="userName"
+                                       placeholder="Choose a username" 
+                                       required="true"/>
+                            <form:errors path="userName" cssClass="field-error"/>
+                        </div>
+                        
+                        <div class="form-group">
+                            <form:label path="password">Password</form:label>
+                            <form:password path="password" 
+                                          class="form-input" 
+                                          id="password"
+                                          placeholder="Create a password" 
+                                          required="true"/>
+                            <form:errors path="password" cssClass="field-error"/>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Confirm Password</label>
+                            <input type="password" class="form-input"
+                                              id="ConfirmPassword" 
+                                              placeholder="Confirm your password" 
+                                              required="true" /> 
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Create Account</button>
+                    </form:form>
                 </div>
-                <br>
-               
-            </form:form>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Register Form -->
-<div id="registerForm" class="form">
-    <h2>Create Account</h2>
-    
-    <!-- Success Message -->
-    <c:if test="${not empty successMessage}">
-        <div class="success-message" id="registerSuccess">${successMessage}</div>
-    </c:if>
-    
-    <!-- Error Message -->
-    <c:if test="${not empty errorMessage}">
-        <div class="error-message" id="registerError">${errorMessage}</div>
-    </c:if>
-    
-    <!-- Registration Form with ModelAttribute -->
-    <form:form action="register" 
-               method="post" 
-               modelAttribute="user"
-               onsubmit="handleRegister(event)">
-               
-        
-        <div class="form-row">
-            <div class="form-group">
-                <form:label path="firstName">First Name</form:label>
-                <form:input type="text" 
-                           path="firstName" 
-                           class="form-input" 
-                           id="firstName"
-                           placeholder="First name" 
-                           required="true"/>
-                <form:errors path="firstName" cssClass="field-error"/>
-            </div>
-            
-            <div class="form-group">
-                <form:label path="lastName">Last Name</form:label>
-                <form:input type="text" 
-                           path="lastName" 
-                           class="form-input"
-                           id="lastName"
-                           placeholder="Last name" 
-                           required="true"/>
-                <form:errors path="lastName" cssClass="field-error"/>
-            </div>
-        </div>
-        
-        <div class="form-group">
-            <form:label path="email">Email</form:label>
-            <form:input type="email" 
-                       path="email" 
-                       class="form-input"
-                       id="email"
-                       placeholder="Enter your email" 
-                       required="true"/>
-            <form:errors path="email" cssClass="field-error"/>
-        </div>
-        
-        <div class="form-group">
-            <form:label path="userName">Username</form:label>
-            <form:input type="text" 
-                       path="userName" 
-                       class="form-input" 
-                       id="userName"
-                       placeholder="Choose a username" 
-                       required="true"/>
-            <form:errors path="userName" cssClass="field-error"/>
-        </div>
-        
-        <div class="form-group">
-            <form:label path="password">Password</form:label>
-            <form:password path="password" 
-                          class="form-input" 
-                          id="password"
-                          placeholder="Create a password" 
-                          required="true"/>
-            <form:errors path="password" cssClass="field-error"/>
-        </div>
-        
-        <%-- <div class="form-group">
-            <form:label path="confirmPassword">Confirm Password</form:label>
-            <form:password path="ConfirmPassword" 
-                          class="form-input"
-                          id="ConfirmPassword" 
-                          placeholder="Confirm your password" 
-                          required="true"/>
-            <form:errors path="ConfirmPassword" cssClass="field-error"/>
-        </div> --%>
-        
-        <div class="form-group">
-        <label>Password</label>
-        <input type="password"  class="form-input"
-                          id="ConfirmPassword" 
-                          placeholder="Confirm your password" 
-                          required="true" /> 
-        </div>
-        
-        <button type="submit" class="submit-btn">Create Account</button>
-    </form:form>
-</div>
     <script>
         // Switch between login and register tabs
         function switchTab(tabName) {
@@ -592,39 +960,54 @@
             }
         }
 
+        function handleRegister(event) {
+            // Prevent form submission for validation
+            event.preventDefault();
 
+            // Get password and confirm password fields
+            const password = document.getElementById("password").value.trim();
+            const confirmPassword = document.getElementById("ConfirmPassword").value.trim();
 
-function handleRegister(event) {
-    // Prevent form submission for validation
-    event.preventDefault();
+            // Check if empty
+            if (password === "" || confirmPassword === "") {
+                alert("Password fields cannot be empty.");
+                return false;
+            }
 
-    // Get password and confirm password fields
-    const password = document.getElementById("password").value.trim();
-    const confirmPassword = document.getElementById("ConfirmPassword").value.trim();
+            // Check length (optional)
+            if (password.length < 6) {
+                alert("Password must be at least 6 characters long.");
+                return false;
+            }
 
-    // Check if empty
-    if (password === "" || confirmPassword === "") {
-        alert("Password fields cannot be empty.");
-        return false;
-    }
+            // Check match
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return false;
+            }
 
-    // Check length (optional)
-    if (password.length < 6) {
-        alert("Password must be at least 6 characters long.");
-        return false;
-    }
+            // ✅ If everything is fine, submit the form
+            event.target.submit();
+        }
 
-    // Check match
-    if (password !== confirmPassword) {
-        alert("Passwords do not match!");
-        return false;
-    }
+        function clearMessages() {
+            document.querySelectorAll('.error-message, .success-message').forEach(msg => {
+                msg.style.display = 'none';
+            });
+        }
 
-    // ✅ If everything is fine, submit the form
-    event.target.submit();
-}
+        function showMessage(elementId, message) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = message;
+                element.style.display = 'block';
+            }
+        }
     </script>
     
-     <div class="tagline" style="background-color:red;">${result}</div> <br>
+    <!-- Result Parameter Display -->
+    <c:if test="${not empty result}">
+        <div class="result-message">${result}</div>
+    </c:if>
 </body>
 </html>

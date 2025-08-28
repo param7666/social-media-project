@@ -1,5 +1,6 @@
 package com.nt.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,10 +14,14 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	@Query("from User  where email = ?1 and password = ?2")
 	public User login(@Param("email") String email, 
 	           @Param("password") String password);
+	
+	
+	// Derived query method (Spring will auto-generate)
+	 List<User> findByUserNameContainingIgnoreCase(String userName);
 
 }
 
-//findByUsername()
+//findByUsername() 
 //findByEmail()
-//findByUsernameContaining() (for search)
+//findByUsernameContaining() (for search) --> complete
 //findByIsActiveTrue()

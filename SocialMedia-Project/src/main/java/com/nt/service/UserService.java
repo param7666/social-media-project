@@ -1,5 +1,6 @@
 package com.nt.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,16 @@ public class UserService implements IUserService{
 		User user=repo.findById(id).orElseThrow(()-> new IllegalArgumentException("User Not found"));
 		System.out.println("UserService.getUserById():: "+user.toString());
 		return user;
+	}
+
+
+	// method to search user using userName
+	@Override
+	public List<User> searchUser(String userName) {
+		System.out.println("UserService.searchUser()");
+		List<User> userList=repo.findByUserNameContainingIgnoreCase(userName);
+		System.out.println("UserService.searchUser()"+userList);
+		return userList;
 	}
 
 	
