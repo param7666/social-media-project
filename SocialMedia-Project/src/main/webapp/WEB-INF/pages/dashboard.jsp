@@ -1,35 +1,105 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page session="true" %>
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="css/styles.css"> <!-- keep your css -->
+    <title>Social Media Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body { margin:0; font-family: Arial, sans-serif; background:#f0f2f5; }
+        .top-nav { background:#1877f2; color:white; padding:10px 20px; display:flex; justify-content:space-between; align-items:center; }
+        .top-nav h1 { margin:0; font-size:20px; }
+        .top-nav input { padding:5px; border-radius:20px; border:none; width:200px; }
+        .dashboard-layout { display:flex; margin-top:20px; }
+        .left-sidebar, .right-sidebar { width:20%; padding:15px; }
+        .main-feed { width:60%; padding:15px; }
+        .user-profile-card { background:white; padding:15px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1); text-align:center; }
+        .user-profile-card img { border-radius:50%; width:100px; height:100px; }
+        .create-post, .post-card { background:white; padding:15px; border-radius:10px; margin-bottom:15px; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+        .post-header { display:flex; align-items:center; }
+        .post-header img { border-radius:50%; width:40px; height:40px; margin-right:10px; }
+        .post-actions { margin-top:10px; display:flex; justify-content:space-between; }
+        .post-actions button { background:none; border:none; cursor:pointer; color:#555; }
+        .nav-menu { list-style:none; padding:0; }
+        .nav-menu li { margin:10px 0; }
+        .nav-menu a { text-decoration:none; color:#1877f2; font-weight:bold; }
+    </style>
 </head>
 <body>
-    <div class="dashboard-container">
-        <h1 style="text-align: center; border: 2px red; background-color: yellow">Welcome to Your Dashboard</h1>
-             <p>${msg}<p> 
-        <!-- ✅ Show logged-in user info from session -->
-        <c:if test="${not empty sessionScope.user}">
-            <h2>Hello, ${sessionScope.user.userName} </h2>
-            <p>Email: ${sessionScope.user.email}</p>
-        </c:if>
 
-        <!-- ✅ Dashboard content -->
-        <div class="dashboard-content">
-            <ul>
-            		<li><a href="update">Update Details</a></li>
-                <li><a href="profile">My Profile</a></li>
-                
-                <li><a href="settings">Settings</a></li>
-                <li><a href="reports">Reports</a></li>
-                <li><a href="logout">Logout</a></li>
-            </ul>
+    <!-- Top Navigation -->
+    <div class="top-nav">
+        <h1>SocialApp</h1>
+        <form action="search" method="post">
+        <input type="text" name="userName" placeholder="Search...">
+        <input type="submit" value="Search">
+        </form>
+        <div class="nav-icons">
+            🔔 💬 <a href="logout" style="color:white; margin-left:15px;">Logout</a>
         </div>
     </div>
 
+    <div class="dashboard-layout">
+
+        <!-- Left Sidebar -->
+        <div class="left-sidebar">
+            <div class="user-profile-card">
+                <c:if test="${not empty sessionScope.profileImage}">
+                    <img src="data:image/jpeg;base64,${sessionScope.profileImage}" alt="Profile Picture"/>
+                </c:if>
+                <c:if test="${empty sessionScope.profileImage}">
+                    <img src="images/default-avatar.png" alt="Default Profile"/>
+                </c:if>
+                <h3>${sessionScope.user.firstName} ${sessionScope.user.lastName}</h3>
+                <p>@${sessionScope.user.userName}</p>
+            </div>
+
+            <ul class="nav-menu">
+                <li><a href="dashboard">🏠 Home</a></li>
+                <li><a href="profile">👤 Profile</a></li>
+                <li><a href="friends">👥 Friends</a></li>
+                <li><a href="messages">💬 Messages</a></li>
+                <li><a href="settings">⚙️ Settings</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Feed -->
+        <div class="main-feed">
+            <!-- Create Post Box -->
+            <div class="create-post">
+                <textarea placeholder="What's on your mind, ${sessionScope.user.firstName}?..." style="width:100%; padding:10px;"></textarea>
+                <button style="margin-top:10px; background:#1877f2; color:white; border:none; padding:10px 20px; border-radius:5px;">Post</button>
+            </div>
+
+            <!-- Example Post -->
+            <div class="post-card">
+                <div class="post-header">
+                    <img src="images/default-avatar.png" alt="User Pic">
+                    <strong>${sessionScope.user.userName}</strong>
+                </div>
+                <p style="margin-top:10px;">This is an example post on your social media feed 🚀</p>
+                <div class="post-actions">
+                    <button>👍 Like</button>
+                    <button>💬 Comment</button>
+                    <button>↪️ Share</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="right-sidebar">
+            <h3>Suggestions</h3>
+            <p>👤 John Doe <button>Add Friend</button></p>
+            <p>👤 Jane Smith <button>Add Friend</button></p>
+
+            <h3 style="margin-top:20px;">Trending</h3>
+            <p>#JavaDevelopment</p>
+            <p>#SpringBoot</p>
+            <p>#SocialMediaApp</p>
+        </div>
+    </div>
 </body>
 </html>

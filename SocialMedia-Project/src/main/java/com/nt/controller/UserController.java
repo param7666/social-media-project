@@ -1,6 +1,8 @@
 package com.nt.controller;
 
 
+import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.nt.model.User;
 import com.nt.service.IUserService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -61,8 +64,27 @@ public class UserController {
 		System.out.println("UserController.profile():: "+user.toString());
 		User userDetails=ser.getUserById(user.getId());
 		System.out.println("UserController.profile():: "+userDetails);
+		 if (userDetails.getProfilePicture() != null) {
+		        String base64Image = Base64.getEncoder().encodeToString(userDetails.getProfilePicture());
+		        map.put("profileImage", base64Image);
+		    }
 		map.put("userDetails", userDetails);
 		return "profile";
+	}
+	
+	@PostMapping("/search")
+	public String searchUserchProfile(HttpServletRequest req,Map<String, Object> map) {
+		String userName=req.getParameter("userName");
+		System.out.println("UserController.searchUserchProfile()"+userName);
+		List<User> users=ser.searchUser(userName);
+		System.out.println("UserController.searchUserchProfile()"+users);
+		if(users!=null) {
+			
+			map.put("userList", users);
+		} else {
+			map.put("message", "Users Not found");
+		}
+		return "search";
 	}
 
 }

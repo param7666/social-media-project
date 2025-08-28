@@ -2,6 +2,7 @@ package com.nt.controller;
 
 import java.net.Authenticator.RequestorType;
 import java.net.http.HttpRequest;
+import java.util.Base64;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,10 @@ public class AuthController {
 		if(user!=null) {
 			session.setAttribute("user", user); // session created...
 			atrs.addFlashAttribute("msg","Login Success");
+			if (user.getProfilePicture() != null) {
+	            String base64Image = Base64.getEncoder().encodeToString(user.getProfilePicture());
+	            session.setAttribute("profileImage", base64Image); // store in session
+	        }
 			return "dashboard"; // dashborad page...
 		} else {
 			atrs.addFlashAttribute("msg","Login fail");

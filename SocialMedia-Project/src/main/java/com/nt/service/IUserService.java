@@ -1,5 +1,7 @@
 package com.nt.service;
 
+import java.util.List;
+
 import com.nt.model.User;
 
 import jakarta.servlet.http.HttpSession;
@@ -10,6 +12,7 @@ public interface IUserService {
 	public User loginUser(String userName,String password);
 	public String updateProfile(User u);
 	public User getUserById(long Id);
+	public List<User> searchUser(String userName);
 		
 	
 
@@ -20,5 +23,5 @@ public interface IUserService {
 //getUserById()
 //getUserByUsername()
 //updateProfile() --> complete
-//searchUsers()
+//searchUsers()  --> complete
 //getUserStats() (posts count, followers count, following count)

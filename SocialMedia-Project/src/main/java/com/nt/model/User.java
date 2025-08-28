@@ -14,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -60,6 +61,7 @@ public class User {
 	private String bio;
 	@Lob
 	private byte[] profilePicture;
+	
 	
 	private LocalDate date_of_birth;
 	
