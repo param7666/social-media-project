@@ -1,6 +1,7 @@
 package com.nt.controller;
 
 
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +80,12 @@ public class UserController {
 		List<User> users=ser.searchUser(userName);
 		System.out.println("UserController.searchUserchProfile()"+users);
 		if(users!=null) {
-			
+			List<String> images = new ArrayList<>();
+			for(User u:users) {
+				images.add(Base64.getEncoder().encodeToString(u.getProfilePicture()));
+				
+			}
+			map.put("profileImages", images);
 			map.put("userList", users);
 		} else {
 			map.put("message", "Users Not found");
@@ -87,6 +93,20 @@ public class UserController {
 		return "search";
 	}
 
+	@PostMapping("/viewProfile")
+	public String viewProfile(HttpServletRequest req,Map<String, Object> map) {
+		System.out.println("UserController.viewProfile()");
+		int id=Integer.parseInt(req.getParameter("id"));
+		System.out.println("UserController.viewProfile():: Id param  "+id);
+		User user=ser.getUserById(id);
+		if(user.getProfilePicture()!=null) {
+			String base64Image = Base64.getEncoder().encodeToString(user.getProfilePicture());
+	        map.put("profileImage", base64Image);
+		}
+		map.put("userDetails", user);
+		return "profile";
+	}
+	
 }
 
 
