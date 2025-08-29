@@ -10,52 +10,42 @@
     body {
         font-family: Arial, sans-serif;
         background: #f2f2f2;
-        margin: 0;
-        padding: 0;
-    }
-    .container {
-        width: 80%;
-        margin: 20px auto;
-    }
-    h1 {
-        text-align: center;
-        color: #333;
     }
     .user-card {
-        display: flex;
-        align-items: center;
+        width: 350px;
         background: #fff;
-        padding: 15px;
-        margin: 15px 0;
         border-radius: 12px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    .profile-pic {
-        margin-right: 20px;
+        box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+        margin: 15px;
+        padding: 20px;
+        display: inline-block;
+        vertical-align: top;
     }
     .profile-pic img {
-        width: 80px;
-        height: 80px;
+        width: 100px;
+        height: 100px;
         border-radius: 50%;
         object-fit: cover;
-        border: 2px solid #4CAF50;
+        border: 2px solid #ddd;
     }
     .user-info {
-        flex: 1;
+        margin-top: 10px;
     }
     .user-info h3 {
-        margin: 0;
-        font-size: 18px;
+        margin: 5px 0;
         color: #333;
     }
     .user-info p {
-        margin: 3px 0;
-        color: #777;
+        margin: 0;
         font-size: 14px;
+        color: #666;
+    }
+    .actions {
+        margin-top: 15px;
     }
     .actions form {
         display: inline-block;
-        margin: 0 5px;
+        margin-right: 5px;
     }
     .actions button {
         padding: 6px 12px;
@@ -63,27 +53,29 @@
         border-radius: 6px;
         cursor: pointer;
         font-size: 14px;
-        transition: 0.3s;
     }
-    .add-btn { background: #4CAF50; color: white; }
-    .remove-btn { background: #f44336; color: white; }
-    .view-btn { background: #2196F3; color: white; }
-    .actions button:hover {
-        opacity: 0.8;
+    .add-btn {
+        background: #4CAF50;
+        color: white;
+    }
+    .remove-btn {
+        background: #f44336;
+        color: white;
+    }
+    .view-btn {
+        background: #2196F3;
+        color: white;
     }
 </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Discover People</h1>
-
-    <c:forEach var="user" items="${userList}">
+    <c:forEach var="user" items="${userList}" varStatus="status">
         <div class="user-card">
             <div class="profile-pic">
                 <c:choose>
-                    <c:when test="${not empty user.profilePicture}">
-                        <img src="data:image/jpeg;base64,${user.profilePicture}" alt="Profile Picture"/>
+                    <c:when test="${not empty profileImages[status.index]}">
+                        <img src="data:image/jpeg;base64,${profileImages[status.index]}" alt="Profile Picture"/>
                     </c:when>
                     <c:otherwise>
                         <img src="default-avatar.png" alt="Default Profile"/>
@@ -110,15 +102,13 @@
                 </form>
 
                 <!-- View Profile -->
-                <form action="viewProfile" method="get">
+                <form action="viewProfile" method="post">
                     <input type="hidden" name="id" value="${user.id}">
                     <button type="submit" class="view-btn">View Profile</button>
                 </form>
             </div>
         </div>
     </c:forEach>
-
-</div>
 
 </body>
 </html>

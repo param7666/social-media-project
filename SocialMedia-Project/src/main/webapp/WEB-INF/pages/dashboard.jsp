@@ -50,8 +50,16 @@
                 <c:if test="${not empty sessionScope.profileImage}">
                     <img src="data:image/jpeg;base64,${sessionScope.profileImage}" alt="Profile Picture"/>
                 </c:if>
+                
+                <div class="container">
+<%--         <c:if test="${not empty sessionScope.profileImage}">
+            <div class="profile-pic">
+                <img src="data:image/jpeg;base64,${sessionScope.profileImage}" alt="Profile Picture"/>
+            </div>
+        </c:if> --%>
+                
                 <c:if test="${empty sessionScope.profileImage}">
-                    <img src="images/default-avatar.png" alt="Default Profile"/>
+                    <img src="data:image/jpeg;base64,${sessionScope.profileImage}" alt="Profile Picture"/>
                 </c:if>
                 <h3>${sessionScope.user.firstName} ${sessionScope.user.lastName}</h3>
                 <p>@${sessionScope.user.userName}</p>
