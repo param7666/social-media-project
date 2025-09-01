@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ page session="true" %>
 <!DOCTYPE html>
 <html>
@@ -19,6 +20,10 @@
         .user-profile-card { background:white; padding:15px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1); text-align:center; }
         .user-profile-card img { border-radius:50%; width:100px; height:100px; }
         .create-post, .post-card { background:white; padding:15px; border-radius:10px; margin-bottom:15px; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+        .create-post textarea { width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; resize:none; }
+        .create-post input[type=file] { margin-top:10px; }
+        .create-post button { margin-top:10px; background:#1877f2; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer; font-weight:bold; }
+        .create-post button:hover { background:#145dbf; }
         .post-header { display:flex; align-items:center; }
         .post-header img { border-radius:50%; width:40px; height:40px; margin-right:10px; }
         .post-actions { margin-top:10px; display:flex; justify-content:space-between; }
@@ -34,8 +39,8 @@
     <div class="top-nav">
         <h1>SocialApp</h1>
         <form action="search" method="post">
-        <input type="text" name="userName" placeholder="Search...">
-        <input type="submit" value="Search">
+            <input type="text" name="userName" placeholder="Search...">
+            <input type="submit" value="Search">
         </form>
         <div class="nav-icons">
             🔔 💬 <a href="logout" style="color:white; margin-left:15px;">Logout</a>
@@ -50,16 +55,8 @@
                 <c:if test="${not empty sessionScope.profileImage}">
                     <img src="data:image/jpeg;base64,${sessionScope.profileImage}" alt="Profile Picture"/>
                 </c:if>
-                
-                <div class="container">
-<%--         <c:if test="${not empty sessionScope.profileImage}">
-            <div class="profile-pic">
-                <img src="data:image/jpeg;base64,${sessionScope.profileImage}" alt="Profile Picture"/>
-            </div>
-        </c:if> --%>
-                
                 <c:if test="${empty sessionScope.profileImage}">
-                    <img src="data:image/jpeg;base64,${sessionScope.profileImage}" alt="Profile Picture"/>
+                    <img src="images/default-avatar.png" alt="Profile Picture"/>
                 </c:if>
                 <h3>${sessionScope.user.firstName} ${sessionScope.user.lastName}</h3>
                 <p>@${sessionScope.user.userName}</p>
@@ -68,7 +65,7 @@
             <ul class="nav-menu">
                 <li><a href="dashboard">🏠 Home</a></li>
                 <li><a href="profile">👤 Profile</a></li>
-                <li><a href="friends">👥 Friends</a></li>
+                <li><a href="update">👥 update profile</a></li>
                 <li><a href="messages">💬 Messages</a></li>
                 <li><a href="settings">⚙️ Settings</a></li>
             </ul>
@@ -76,11 +73,27 @@
 
         <!-- Main Feed -->
         <div class="main-feed">
-            <!-- Create Post Box -->
-            <div class="create-post">
-                <textarea placeholder="What's on your mind, ${sessionScope.user.firstName}?..." style="width:100%; padding:10px;"></textarea>
-                <button style="margin-top:10px; background:#1877f2; color:white; border:none; padding:10px 20px; border-radius:5px;">Post</button>
-            </div>
+          <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+
+<!-- Create Post Box -->
+<div class="create-post">
+    <form:form action="savePost" method="post" modelAttribute="p" enctype="multipart/form-data">
+        <div style="margin-bottom:10px;">
+            <form:textarea path="content" placeholder="What's on your mind, ${sessionScope.user.firstName}?..." 
+                           style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; resize:none;"/>
+        </div>
+        <div style="margin-bottom:10px;">
+            <label for="imageUpload">📷 Add Image</label>
+            <input type="file" id="imageUpload" name="imageFile" 
+                   style="display:block; margin-top:5px;"/>
+        </div>
+        <button type="submit" 
+                style="background:#1877f2; color:white; border:none; padding:10px 20px; border-radius:5px; cursor:pointer;">
+            Post
+        </button>
+    </form:form>
+</div>
+
 
             <!-- Example Post -->
             <div class="post-card">
@@ -107,6 +120,8 @@
             <p>#JavaDevelopment</p>
             <p>#SpringBoot</p>
             <p>#SocialMediaApp</p>
+            <p>#${result}</p>
+            
         </div>
     </div>
 </body>

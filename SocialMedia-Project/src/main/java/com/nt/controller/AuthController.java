@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.nt.model.Post;
 import com.nt.model.User;
 import com.nt.service.IUserService;
 
@@ -38,7 +39,7 @@ public class AuthController {
 	//Handeler method to login user
 	
 	@PostMapping("/login")
-	public String loginUser(@ModelAttribute("user") User u,HttpSession session, RedirectAttributes atrs) {
+	public String loginUser(@ModelAttribute("user") User u,@ModelAttribute("p")Post post,HttpSession session, RedirectAttributes atrs) {
 		System.out.println("AuthController.loginUser()");
 		System.out.println(u.getEmail());
 		System.out.println(u.getPassword());
@@ -51,7 +52,7 @@ public class AuthController {
 	            String base64Image = Base64.getEncoder().encodeToString(user.getProfilePicture());
 	            session.setAttribute("profileImage", base64Image); // store in session
 	        }
-			return "dashboard"; // dashborad page...
+			return "redirect:/dashboard";// dashborad page...
 		} else {
 			atrs.addFlashAttribute("msg","Login fail");
 			return "redirect:/";

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.nt.model.Post;
 import com.nt.model.User;
 import com.nt.service.IUserService;
 
@@ -70,6 +71,13 @@ public class UserController {
 		        map.put("profileImage", base64Image);
 		    }
 		map.put("userDetails", userDetails);
+		List<Post> posts=user.getPosts();
+		List<String> images=new ArrayList<>();
+		for(Post p:posts) {
+			images.add(Base64.getEncoder().encodeToString(p.getImage()));
+		}
+		map.put("posts", posts);
+		map.put("postImages", images);
 		return "profile";
 	}
 	

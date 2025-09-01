@@ -93,6 +93,8 @@
     </div>
 </div>
 
+<a href="home">home</a>
+
 <script>
     // Add some interactive effects
     document.addEventListener('DOMContentLoaded', function() {
