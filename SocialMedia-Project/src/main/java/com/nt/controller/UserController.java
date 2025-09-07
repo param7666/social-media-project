@@ -35,7 +35,7 @@ public class UserController {
 		System.out.println("UserController.updateProfile()");
 		User user = (User) session.getAttribute("user"); // fetch session data 
 		BeanUtils.copyProperties(user, u); // add to model attribute
-		System.out.println("UserController.updateProfile():: "+user.toString());
+		System.out.println("UserController.updateProfile():: "+user.getFirstName());
 		return "update";
 	}
 	
@@ -63,9 +63,9 @@ public class UserController {
 	@GetMapping("/profile")
 	public String profile(HttpSession ses,Map<String, Object> map) {
 		User user=(User)ses.getAttribute("user");
-		System.out.println("UserController.profile():: "+user.toString());
+		System.out.println("UserController.profile():: "+user.getFirstName());
 		User userDetails=ser.getUserById(user.getId());
-		System.out.println("UserController.profile():: "+userDetails);
+		System.out.println("UserController.profile():: "+userDetails.getFirstName());
 		 if (userDetails.getProfilePicture() != null) {
 		        String base64Image = Base64.getEncoder().encodeToString(userDetails.getProfilePicture());
 		        map.put("profileImage", base64Image);
@@ -81,12 +81,13 @@ public class UserController {
 		return "profile";
 	}
 	
+	@SuppressWarnings("unused")
 	@PostMapping("/search")
 	public String searchUserchProfile(HttpServletRequest req,Map<String, Object> map) {
 		String userName=req.getParameter("userName");
 		System.out.println("UserController.searchUserchProfile()"+userName);
 		List<User> users=ser.searchUser(userName);
-		System.out.println("UserController.searchUserchProfile()"+users);
+		System.out.println("UserController.searchUserchProfile()"+users.size());
 		if(users!=null) {
 			List<String> images = new ArrayList<>();
 			for(User u:users) {

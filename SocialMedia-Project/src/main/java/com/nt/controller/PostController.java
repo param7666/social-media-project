@@ -24,14 +24,16 @@ public class PostController {
 
 	@PostMapping("/savePost")
 	public String savePost(@ModelAttribute("p") Post post,@RequestParam("imageFile") MultipartFile file, HttpSession ses,RedirectAttributes atrs) throws IOException {
-		System.out.println("PostController.savePost()");
+		System.out.println("PostController.savePost() Entered");
 		User user=(User)ses.getAttribute("user");
 		
             post.setImage(file.getBytes());
         
 		post.setUser(user);
 		String result=postService.savePost(post);
+		System.out.println(result);
 		atrs.addFlashAttribute("result",result);
-		return "dashboard";
+		System.out.println("Redirected to dashboard form savePost");
+		return "redirect:/dashboard";
 	}
 }

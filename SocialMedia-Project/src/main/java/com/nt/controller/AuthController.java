@@ -30,7 +30,7 @@ public class AuthController {
 	public String registerUser(@ModelAttribute User u, RedirectAttributes atrs) {
 		System.out.println("AuthController.registerUser()");
 		String result=ser.registerUser(u);
-		System.out.println("AuthController.registerUser():: "+result);
+		System.out.println("AuthController.registerUser():: ");
 		atrs.addFlashAttribute("result",result);
 		return "redirect:/";
 	}
@@ -39,19 +39,16 @@ public class AuthController {
 	//Handeler method to login user
 	
 	@PostMapping("/login")
-	public String loginUser(@ModelAttribute("user") User u,@ModelAttribute("p")Post post,HttpSession session, RedirectAttributes atrs) {
+	public String loginUser(@ModelAttribute("user") User u,HttpSession session, RedirectAttributes atrs) {
 		System.out.println("AuthController.loginUser()");
 		System.out.println(u.getEmail());
 		System.out.println(u.getPassword());
 		User user=ser.loginUser(u.getEmail(), u.getPassword());
-		System.out.println("AuthController.loginUser():: "+user);
+		System.out.println("AuthController.loginUser():: "+user.getFirstName());
 		if(user!=null) {
 			session.setAttribute("user", user); // session created...
+			System.out.println("session created....");
 			atrs.addFlashAttribute("msg","Login Success");
-			if (user.getProfilePicture() != null) {
-	            String base64Image = Base64.getEncoder().encodeToString(user.getProfilePicture());
-	            session.setAttribute("profileImage", base64Image); // store in session
-	        }
 			return "redirect:/dashboard";// dashborad page...
 		} else {
 			atrs.addFlashAttribute("msg","Login fail");
