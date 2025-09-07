@@ -87,6 +87,17 @@ public class User {
 	
 	@Column(length = 20)
 	private String status="active";
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", userName=" + userName + ", password=" + password + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", email=" + email + ", mobileNo=" + mobileNo + ", bio=" + bio
+				+ ", date_of_birth=" + date_of_birth + ", location=" + location + ", posts=" + posts + ", createDate="
+				+ createDate + ", updateTime=" + updateTime + ", updateCount=" + updateCount + ", createdBy="
+				+ createdBy + ", updateBy=" + updateBy + ", status=" + status + "]";
+	}
+	
+	
 	
 
 }

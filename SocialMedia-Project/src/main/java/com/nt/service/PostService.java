@@ -1,6 +1,9 @@
 package com.nt.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.nt.model.Post;
@@ -21,4 +24,12 @@ public class PostService implements IPostServie{
 		return "Post saved with id values "+postId;
 	}
 
+	@Override
+	public List<Post> showPostByDate() {
+		Sort sort=Sort.by(Sort.Direction.DESC,"createDate");
+		return postRepo.findAll(sort);
+	}
+
+	
+	
 }
