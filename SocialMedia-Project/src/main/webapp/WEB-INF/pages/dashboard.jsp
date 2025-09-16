@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
     <link rel="stylesheet" href="css/styles.css">
+    
 
     <style>
         * {
@@ -235,7 +236,7 @@
             margin: 15px 0 8px 0;
             font-size: 20px;
             font-weight: 600;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+          background: linear-gradient(135deg, #667eea, #764ba2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -662,7 +663,7 @@
                 <c:if test="${empty sessionScope.profileImage}">
                     <img src="images/default-avatar.png" alt="Profile Picture"/>
                 </c:if>
-                <h3>${sessionScope.user.firstName} ${sessionScope.user.lastName}</h3>
+                <h3 style="background-color: white"> ${sessionScope.user.firstName} ${sessionScope.user.lastName}</h3>
                 <p>@${sessionScope.user.userName}</p>
             </div>
 
@@ -790,16 +791,50 @@
             </div>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <script>
-        function toggleLike(postId, button) {
-            button.classList.toggle('liked');
-            const isLiked = button.classList.contains('liked');
-            button.innerHTML = isLiked ? '<i class="fa-solid fa-thumbs-up"></i> Liked' : '<i class="fa-regular fa-thumbs-up"></i> Like';
-            const likesCountElement = document.getElementById('likes-count-' + postId);
-            const currentCount = parseInt(likesCountElement.textContent);
-            likesCountElement.textContent = (isLiked ? currentCount + 1 : currentCount - 1) + ' Likes';
-        }
+    function toggleLike(postId, button) {
+        // Disable button during request
+        $(button).prop('disabled', true);
+        const originalText = $(button).html();
+        $(button).html('<i class="fa-solid fa-spinner fa-spin"></i> Processing...');
+        
+        // Send AJAX GET request using jQuery
+        $.ajax({
+            url: '${pageContext.request.contextPath}/posts/like',
+            type: 'GET',
+            data: { postId: postId },
+            dataType: 'json',
+            success: function(data) {
+                if (data.success) {
+                    // Update button appearance
+                    if (data.isLiked) {
+                        $(button).addClass('liked');
+                        $(button).html('<i class="fa-solid fa-thumbs-up"></i> Liked');
+                    } else {
+                        $(button).removeClass('liked');
+                        $(button).html('<i class="fa-regular fa-thumbs-up"></i> Like');
+                    }
+                    
+                    // Update likes count
+                    $('#likes-count-' + postId).text(data.likeCount + ' Likes');
+                } else {
+                    alert(data.message || 'Error processing like');
+                    $(button).html(originalText);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('Failed to process like. Please try again.');
+                $(button).html(originalText);
+            },
+            complete: function() {
+                // Re-enable button
+                $(button).prop('disabled', false);
+            }
+        });
+    }
         function toggleComments(postId) {
             const section = document.getElementById('comments-' + postId);
             section.style.display = section.style.display === 'block' ? 'none' : 'block';
@@ -814,3 +849,7 @@
                 alert('Comment added!');
             }
         }
+        
+   </script>
+   </body>
+   </html>
