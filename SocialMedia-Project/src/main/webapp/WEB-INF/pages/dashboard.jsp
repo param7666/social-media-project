@@ -844,7 +844,7 @@
             if (input.value.trim()) {
                 const commentsCountElement = document.getElementById('comments-count-' + postId);
                 const currentCount = parseInt(commentsCountElement.textContent);
-                commentsCountElement.textContent = (currentCount + 1) + ' Comments';
+   5             commentsCountElement.textContent = (currentCount + 1) + ' Comments';
                 input.value = '';
                 alert('Comment added!');
             }

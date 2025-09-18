@@ -44,8 +44,8 @@ public class AuthController {
 		System.out.println(u.getEmail());
 		System.out.println(u.getPassword());
 		User user=ser.loginUser(u.getEmail(), u.getPassword());
-		System.out.println("AuthController.loginUser():: "+user.getFirstName());
 		if(user!=null) {
+			System.out.println("AuthController.loginUser():: "+user.getFirstName());
 			session.setAttribute("user", user); // session created...
 			System.out.println("session created....");
 			atrs.addFlashAttribute("msg","Login Success");
