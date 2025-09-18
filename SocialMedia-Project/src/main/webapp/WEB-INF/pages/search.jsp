@@ -110,6 +110,6 @@
         </div>
     </c:forEach>
 
-<a href="home">home</a>
+<a href="dashboard">home</a>
 </body>
 </html>
