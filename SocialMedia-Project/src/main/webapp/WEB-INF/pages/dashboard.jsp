@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page session="true" %>
 <!DOCTYPE html>
 <html>
@@ -174,6 +175,10 @@
         .left-sidebar, .right-sidebar {
             width: 300px;
         }
+        .left-sidebar {
+            position: sticky;
+    			
+        }
 
         .main-feed {
             flex: 1;
@@ -192,6 +197,7 @@
             overflow: hidden;
             animation: slideInUp 0.6s ease-out;
             transition: all 0.3s ease;
+            
         }
 
         .card:hover {
@@ -214,8 +220,9 @@
         .user-profile-card {
             text-align: center;
             padding: 30px 20px;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-        }
+            
+/*             background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+ */        }
 
         .user-profile-card img {
             border-radius: 50%;
@@ -252,6 +259,8 @@
         .nav-menu {
             list-style: none;
             padding: 0;
+            position: sticky;
+    			top: 0;
         }
 
         .nav-menu li a {
@@ -515,6 +524,88 @@
             text-decoration: none;
         }
 
+        /* News Card Styles */
+        .news-card {
+        width:400px;
+            margin-bottom: 25px;
+        }
+
+        .news-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .news-item:hover {
+            background: rgba(102, 126, 234, 0.05);
+            transform: translateX(3px);
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-image {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .news-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .news-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1c1e21;
+            margin-bottom: 8px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-description {
+            font-size: 12px;
+            color: #6c757d;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .news-source {
+            font-size: 11px;
+            color: #667eea;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .news-source i {
+            font-size: 10px;
+        }
+
+        /* Error message styling */
+        .error-message {
+            padding: 20px;
+            text-align: center;
+            color: #e74c3c;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
         /* Enhanced Comment Section */
         .comment-section {
             background: rgba(102, 126, 234, 0.02);
@@ -601,6 +692,10 @@
                 padding-left: 20px;
                 padding-right: 20px;
             }
+
+            .news-image {
+                height: 100px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -677,7 +772,7 @@
         </div>
 
         <!-- Main Feed -->
-        <div class="main-feed">
+        <div style="width: 100px" class="main-feed">
             <!-- Create Post Box -->
             <div class="card create-post">
                 <form:form action="savePost" method="post" modelAttribute="p" enctype="multipart/form-data">
@@ -762,8 +857,9 @@
             </c:choose>
         </div>
 
-        <!-- Right Sidebar -->
+ <!-- Right Sidebar -->
         <div class="right-sidebar">
+            <!-- Suggestions Card -->
             <div class="card suggestions-card">
                 <h3>Suggestions for you</h3>
                 <div class="suggestion-item">
@@ -779,6 +875,8 @@
                     <button class="btn btn-light">Add Friend</button>
                 </div>
             </div>
+
+            <!-- Trending Card -->
             <div class="card suggestions-card">
                 <h3>Trending</h3>
                 <div class="trending-item"><a href="#">#JavaDevelopment</a></div>
@@ -789,8 +887,106 @@
                     <div class="trending-item"><a href="#">#${result}</a></div>
                 </c:if>
             </div>
+
+            <!-- News Card -->
+            <div class="card news-card">
+                <h3 style="padding: 20px 25px; border-bottom: 1px solid rgba(102, 126, 234, 0.1); font-size: 18px; font-weight: 600; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                    <i class="fa-solid fa-newspaper"></i> Latest News
+                </h3>
+                
+                <c:choose>
+                    <c:when test="${not empty news}">
+                        <c:forEach var="article" items="${news}" begin="0" end="9">
+                            <div class="news-item" onclick="openNewsLink('${article.url}')">
+                                <c:if test="${not empty article.urlToImage}">
+                                    <img src="${article.urlToImage}" alt="News Image" class="news-image" 
+                                         onerror="this.style.display='none'"/>
+                                </c:if>
+                                
+                                <div class="news-title">
+                                    <c:choose>
+                                        <c:when test="${fn:length(article.title) > 60}">
+                                            ${fn:substring(article.title, 0, 60)}...
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${article.title}
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                                
+                                <c:if test="${not empty article.description}">
+                                    <div class="news-description">
+                                        <c:choose>
+                                            <c:when test="${fn:length(article.description) > 80}">
+                                                ${fn:substring(article.description, 0, 80)}...
+                                            </c:when>
+                                            <c:otherwise>
+                                                ${article.description}
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </c:if>
+                                
+                                <div class="news-source">
+                                    <i class="fa-solid fa-globe"></i>
+                                    <c:choose>
+                                        <c:when test="${not empty article.source.name}">
+                                            ${article.source.name}
+                                        </c:when>
+                                        <c:otherwise>
+                                            Unknown Source
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <c:if test="${not empty article.publishedAt}">
+                                        <c:set var="dateStr" value="${article.publishedAt}" />
+                                        <c:choose>
+                                            <c:when test="${fn:contains(dateStr, 'T')}">
+                                                <c:set var="datePart" value="${fn:substring(dateStr, 0, 10)}" />
+                                                <c:set var="year" value="${fn:substring(datePart, 0, 4)}" />
+                                                <c:set var="month" value="${fn:substring(datePart, 5, 7)}" />
+                                                <c:set var="day" value="${fn:substring(datePart, 8, 10)}" />
+                                                • <c:choose>
+                                                    <c:when test="${month eq '01'}">Jan</c:when>
+                                                    <c:when test="${month eq '02'}">Feb</c:when>
+                                                    <c:when test="${month eq '03'}">Mar</c:when>
+                                                    <c:when test="${month eq '04'}">Apr</c:when>
+                                                    <c:when test="${month eq '05'}">May</c:when>
+                                                    <c:when test="${month eq '06'}">Jun</c:when>
+                                                    <c:when test="${month eq '07'}">Jul</c:when>
+                                                    <c:when test="${month eq '08'}">Aug</c:when>
+                                                    <c:when test="${month eq '09'}">Sep</c:when>
+                                                    <c:when test="${month eq '10'}">Oct</c:when>
+                                                    <c:when test="${month eq '11'}">Nov</c:when>
+                                                    <c:when test="${month eq '12'}">Dec</c:when>
+                                                    <c:otherwise>${month}</c:otherwise>
+                                                </c:choose> ${day}
+                                            </c:when>
+                                            <c:otherwise>
+                                                • ${fn:substring(article.publishedAt, 0, 10)}
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:if>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </c:when>
+                    <c:when test="${not empty error}">
+                        <div class="error-message">
+                            <i class="fa-solid fa-exclamation-triangle"></i>
+                            <p>${error}</p>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="error-message">
+                            <i class="fa-solid fa-newspaper"></i>
+                            <p>No news available at the moment</p>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+            </div>
         </div>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <script>
@@ -835,21 +1031,46 @@
             }
         });
     }
-        function toggleComments(postId) {
-            const section = document.getElementById('comments-' + postId);
-            section.style.display = section.style.display === 'block' ? 'none' : 'block';
+
+    function toggleComments(postId) {
+        const section = document.getElementById('comments-' + postId);
+        section.style.display = section.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function addComment(postId) {
+        const input = document.getElementById('comment-input-' + postId);
+        if (input.value.trim()) {
+            const commentsCountElement = document.getElementById('comments-count-' + postId);
+            const currentCount = parseInt(commentsCountElement.textContent);
+            commentsCountElement.textContent = (currentCount + 1) + ' Comments';
+            input.value = '';
+            alert('Comment added!');
         }
-        function addComment(postId) {
-            const input = document.getElementById('comment-input-' + postId);
-            if (input.value.trim()) {
-                const commentsCountElement = document.getElementById('comments-count-' + postId);
-                const currentCount = parseInt(commentsCountElement.textContent);
-   5             commentsCountElement.textContent = (currentCount + 1) + ' Comments';
-                input.value = '';
-                alert('Comment added!');
+    }
+
+    // Function to open news links in a new tab
+    function openNewsLink(url) {
+        if (url && url.trim() !== '') {
+            window.open(url, '_blank');
+        }
+    }
+
+    // Add hover effects for news items
+    $(document).ready(function() {
+        $('.news-item').hover(
+            function() {
+                $(this).css('cursor', 'pointer');
+            },
+            function() {
+                $(this).css('cursor', 'default');
             }
-        }
-        
+        );
+
+        // Handle image loading errors
+        $('.news-image').on('error', function() {
+            $(this).hide();
+        });
+    });
    </script>
    </body>
    </html>

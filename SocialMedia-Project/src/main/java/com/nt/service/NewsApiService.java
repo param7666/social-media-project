@@ -1,15 +1,17 @@
 package com.nt.service;
 
+import java.util.concurrent.CompletableFuture;
+import org.springframework.stereotype.Service;
 import com.kwabenaberko.newsapilib.NewsApiClient;
 import com.kwabenaberko.newsapilib.models.request.EverythingRequest;
 import com.kwabenaberko.newsapilib.models.response.ArticleResponse;
-import org.springframework.stereotype.Service;
 
-import java.util.concurrent.CompletableFuture;
+
 
 @Service
-public class NewsApiService {
+public class NewsApiService { 
 
+	
     private final NewsApiClient newsApiClient;
 
     public NewsApiService() {
