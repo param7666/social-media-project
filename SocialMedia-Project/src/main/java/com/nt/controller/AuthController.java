@@ -1,21 +1,16 @@
 package com.nt.controller;
 
-import java.net.Authenticator.RequestorType;
-import java.net.http.HttpRequest;
-import java.util.Base64;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.nt.model.Post;
+import com.nt.mailConfig.MailConfiguration;
 import com.nt.model.User;
 import com.nt.service.IUserService;
-
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -23,16 +18,55 @@ public class AuthController {
 	
 	@Autowired
 	private IUserService ser;
+	@Autowired
+	private MailConfiguration mail;
 	
 	//Handeler method for register user
 
 	@PostMapping("/register")
-	public String registerUser(@ModelAttribute User u, RedirectAttributes atrs) {
+	public String registerUser(@ModelAttribute User u, HttpSession ses,RedirectAttributes atrs) throws Exception {
 		System.out.println("AuthController.registerUser()");
-		String result=ser.registerUser(u);
-		System.out.println("AuthController.registerUser():: ");
-		atrs.addFlashAttribute("result",result);
-		return "redirect:/";
+		if(ser.isEmailExists(u.getEmail())) {
+			System.out.println("Email already registered. Please login!");
+			atrs.addFlashAttribute("result", "Email already registered. Please login!");
+			return "redirect:/";
+		} else {
+		ses.setAttribute("user", u);
+		Integer otp=mail.sendOtp(u.getEmail());
+		ses.setAttribute("otp", otp);
+		return "redirect:/otpPageLoader";
+		}
+	}
+	
+	
+	@GetMapping("/otpPageLoader")
+	public String openOtpPage() {
+		System.out.println("From otpPageLoader");
+//		System.out.println("From otpPageLoader OTP:: "+otp);
+		return "otp";
+	}
+	
+	@PostMapping("/verifyOTP")
+	public String verifyOtp(@RequestParam("otpCode")Integer otpCode, HttpSession ses,RedirectAttributes atrs) {
+		System.out.println("AuthController.verifyOtp()");
+		 User user = (User) ses.getAttribute("user");
+	     Integer otp = (Integer) ses.getAttribute("otp");
+
+	     System.out.println("Verifying OTP for: " + user);
+	     System.out.println("User entered: " + otpCode + ", Actual OTP: " + otp);
+	     
+	     if(otpCode!=null && otpCode.equals(otp)) {
+	    	 String result=ser.registerUser(user);
+	    	 ses.removeAttribute("user");
+	    	 ses.removeAttribute("otp");
+	    	 System.out.println("OTP Verification Pass");
+	    	 atrs.addFlashAttribute("result",result);
+	    	 return "redirect:/";
+	     } else {
+	    	 System.out.println("OTP Verification Fail");
+	    	 atrs.addFlashAttribute("result","OTP Verification Fail");
+	    	 return "redirect:/";
+	     }
 	}
 	
 	

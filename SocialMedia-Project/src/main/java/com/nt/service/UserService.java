@@ -74,6 +74,14 @@ public class UserService implements IUserService{
 		return userList;
 	}
 
+
+
+	@Override
+	public boolean isEmailExists(String email) {
+		System.out.println("UserService.isEmailExists()");
+		return repo.existsByEmail(email);
+	}
+
 	
 }
 

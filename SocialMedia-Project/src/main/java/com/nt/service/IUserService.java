@@ -13,6 +13,7 @@ public interface IUserService {
 	public String updateProfile(User u);
 	public User getUserById(long Id);
 	public List<User> searchUser(String userName);
+	public boolean isEmailExists(String email);
 		
 	
 

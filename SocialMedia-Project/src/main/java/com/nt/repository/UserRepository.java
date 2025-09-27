@@ -18,6 +18,8 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	
 	// Derived query method (Spring will auto-generate)
 	 List<User> findByUserNameContainingIgnoreCase(String userName);
+	 
+	 public boolean existsByEmail(String email);
 
 }
 
