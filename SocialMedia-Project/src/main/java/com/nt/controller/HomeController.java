@@ -9,9 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+
+import com.kwabenaberko.newsapilib.models.Article;
+import com.kwabenaberko.newsapilib.models.response.ArticleResponse;
 import com.nt.model.Post;
 import com.nt.model.User;
 import com.nt.service.IPostServie;
+import com.nt.service.NewsApiService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -20,6 +24,9 @@ public class HomeController {
 	
 	@Autowired
 	private IPostServie postService;
+	
+	@Autowired
+	private NewsApiService newsApiService;
 	
 	@SuppressWarnings("unused")
 	@GetMapping("/dashboard")
@@ -40,6 +47,17 @@ public class HomeController {
 			}
 			map.put("posts", posts);
 			map.put("postImages", images);
+			
+			// News (fetch technology news by default)
+			try {
+				ArticleResponse response=newsApiService.getNews("india").get();
+				 List<Article> articles = response.getArticles();
+				map.putIfAbsent("news", articles);
+			} catch(Exception e) {
+				map.put("error", "Failed to fetch news: " + e.getMessage());
+			}
+			
+			
 			return "dashboard";
 			
 		} else {
