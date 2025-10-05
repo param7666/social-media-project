@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.nt.model.User;
 import com.nt.repository.UserRepository;
@@ -80,6 +81,15 @@ public class UserService implements IUserService{
 	public boolean isEmailExists(String email) {
 		System.out.println("UserService.isEmailExists()");
 		return repo.existsByEmail(email);
+	}
+
+
+
+	@Transactional
+	@Override
+	public String deleteAccount(Long id) throws Exception {
+		repo.deleteById(id);
+		return "Account deleted with the id "+id;
 	}
 
 	

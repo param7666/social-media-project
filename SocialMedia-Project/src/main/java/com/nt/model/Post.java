@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.UpdateTimestamp;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.CascadeType;
@@ -28,6 +30,9 @@ import lombok.RequiredArgsConstructor;
 @Table(name="project101_post")
 @AllArgsConstructor
 @RequiredArgsConstructor
+//@SQLDelete(sql="UPDATE project101_post SET STATUS ='INACTIVE' WHERE POST_ID = ?  ") // FOR SOFT DELETION
+//@SQLRestriction("STATUS <> 'INACTIVE' ") // FOR MAKING INACTIVE RECORD NOT PARTICEPATE
+
 public class Post {
 	
 	@Id

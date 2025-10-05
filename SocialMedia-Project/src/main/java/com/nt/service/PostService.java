@@ -30,6 +30,14 @@ public class PostService implements IPostServie{
 		return postRepo.findAll(sort);
 	}
 
+	@Override
+	public String deletePost(Long id) throws Exception {
+		postRepo.deleteById(id);
+		String msg="Post Deleted with id number"+id;
+		return msg;
+	}
+
+	
 	
 	
 }
