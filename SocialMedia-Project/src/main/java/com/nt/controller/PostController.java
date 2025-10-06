@@ -1,9 +1,11 @@
 package com.nt.controller;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,4 +38,19 @@ public class PostController {
 		System.out.println("Redirected to dashboard form savePost");
 		return "redirect:/dashboard";
 	}
+	
+	@PostMapping("/delete-post")
+	public String deletePost(@RequestParam("postId") Long postId,RedirectAttributes atrs) {
+		System.out.println("PostController.deletePost()");
+	    try {
+	        String message=postService.deletePost(postId);
+	        System.out.println(message);
+	        atrs.addFlashAttribute("msg",message);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        atrs.addFlashAttribute("msg",e.getMessage());
+	    }
+	    return "redirect:/profile"; // Redirect back to profile page
+	}
+
 }
