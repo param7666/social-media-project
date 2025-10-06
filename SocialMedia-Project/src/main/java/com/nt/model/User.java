@@ -3,18 +3,11 @@ package com.nt.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.UpdateTimestamp;
 import jakarta.annotation.Nonnull;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.persistence.Version;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,7 +21,7 @@ import java.util.*;
 @AllArgsConstructor
 @RequiredArgsConstructor
 
-//@SQLDelete(sql="UPDATE ACTOR1001 SET STATUS ='INACTIVE' WHERE AID = ? AND UPDATE_COUNT=? ") // FOR SOFT DELETION
+//@SQLDelete(sql="UPDATE ACTOR1001 SET STATUS ='INACTIVE' WHERE id = ?  ") // FOR SOFT DELETION
 //@SQLRestriction("STATUS <> 'INACTIVE' ") // FOR MAKING INACTIVE RECORD NOT PARTICEPATE
 public class User {
 	@Id

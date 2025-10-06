@@ -3,6 +3,9 @@ package com.nt.model;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +21,9 @@ import lombok.NonNull;
 @AllArgsConstructor
 @Entity
 @Table(name="PROJECT101_Likes")
+//@SQLDelete(sql="UPDATE project101_likes SET STATUS ='INACTIVE' WHERE L_ID = ?  ") // FOR SOFT DELETION
+//@SQLRestriction("STATUS <> 'INACTIVE' ") // FOR MAKING INACTIVE RECORD NOT PARTICEPATE
+
 public class Likes {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

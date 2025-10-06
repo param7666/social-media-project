@@ -14,6 +14,7 @@ public interface IUserService {
 	public User getUserById(long Id);
 	public List<User> searchUser(String userName);
 	public boolean isEmailExists(String email);
+	public String deleteAccount(Long id) throws Exception;
 		
 	
 

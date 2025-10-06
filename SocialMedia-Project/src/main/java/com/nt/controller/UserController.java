@@ -116,6 +116,19 @@ public class UserController {
 		return "profile";
 	}
 	
+	@GetMapping("/delete-account")
+	public String deleteAccount(HttpSession ses,Map<String, Object> map, RedirectAttributes ats) {
+		try {
+			User user=(User)ses.getAttribute("user");
+			String msg=ser.deleteAccount(user.getId());
+			ats.addFlashAttribute("msg", msg);
+			return "redirect:/";
+		} catch(Exception e) {
+			map.put("msg", e.getMessage());
+			return "redirect:/viewProfile";
+		}
+	}
+	
 }
 
 
