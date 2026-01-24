@@ -8,6 +8,7 @@ public class SocialMediaProjectApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SocialMediaProjectApplication.class, args);
+		System.out.println("Social Media Application has been started.......");
 	}
 
 }
